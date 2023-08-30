@@ -30,3 +30,12 @@ app.post('/thoughts', async (req, res) => {
     }
   });
 
+// Get all thoughts
+app.get('/thoughts', async (req, res) => {
+    try {
+      const thoughts = await Thought.find();
+      res.status(200).json(thoughts);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
