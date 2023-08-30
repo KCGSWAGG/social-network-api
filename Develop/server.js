@@ -18,4 +18,15 @@ mongoose.connect('mongodb://localhost:27017/thoughtsDB', {
     console.error('Error connecting to MongoDB:', error);
   });
 
+  // Create a new thought
+app.post('/thoughts', async (req, res) => {
+    try {
+      const { thoughtText, username } = req.body;
+      const thought = new Thought({ thoughtText, username });
+      await thought.save();
+      res.status(201).json(thought);
+    } catch (error) {
+      res.status(400).json({ error: 'Invalid input' });
+    }
+  });
 
