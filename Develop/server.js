@@ -119,5 +119,18 @@ app.post('/api/thoughts/:userid', async (req, res) => {
     res.status(400).json({ error: 'Wrong input' });
   }
 });
+app.get('/api/thoughts/:id', async (req, res) => {
+  try {
+    const thought = await Thought.findOne({_id:req.params.id});
+    res.status(201).json(thought);
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ error: 'Wrong input' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is on port ${PORT}`);
+});
 
 
