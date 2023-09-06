@@ -95,5 +95,29 @@ app.get('/api/users', async (req, res) => {
       res.status(400).json({ error: 'Wrong input' });
     }
   });
+  // Get all thoughts
+app.get('/api/thoughts', async (req, res) => {
+  try {
+    const thoughts = await Thought.find();
+    res.status(200).json(thoughts);
+  } catch (error) {
+    res.status(500).json({ error: 'server error' });
+  }
+});
+// Create a new thought
+app.post('/api/thoughts/:userid', async (req, res) => {
+  try {
+    console.log(req.params.userid)
+    const { thoughtText, username } = req.body;
+    const thought =  await Thought.create({ thoughtText, username });
+    console.log(thought)
+    const user = await User.findOneAndUpdate({_id:req.params.userId},{$push:{thoughts:thought._id}},{new:true})
+    console.log(user)
+    res.status(201).json(thought);
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ error: 'Wrong input' });
+  }
+});
 
 
