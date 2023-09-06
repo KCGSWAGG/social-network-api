@@ -51,5 +51,24 @@ app.get('/api/users', async (req, res) => {
       res.status(400).json({ error: 'Wrong input' });
     }
   });
+  app.put('/api/users/:id', async (req, res) => {
+    try {
+      const user = await User.findOneAndUpdate({_id:req.params.id},{$set:req.body},{new:true});
+      res.status(201).json(user);
+    } catch (error) {
+      console.log(error)
+      res.status(400).json({ error: 'Wrong input' });
+    }
+  });
+
+  app.delete('/api/users/:id', async (req, res) => {
+    try {
+      const user = await User.findOneAndDelete({_id:req.params.id});
+      res.status(201).json({message: "success"});
+    } catch (error) {
+      console.log(error)
+      res.status(400).json({ error: 'Wrong input' });
+    }
+  });
 
 
