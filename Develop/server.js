@@ -70,5 +70,30 @@ app.get('/api/users', async (req, res) => {
       res.status(400).json({ error: 'Wrong input' });
     }
   });
+  app.post('/api/users/:userId/friends/:friendId', async (req, res) => {
+    try {
+      const user = await User.findOneAndUpdate({_id:req.params.userId},{$addToSet:{friends:req.params.friendId}},{new:true});
+      if (!user){
+        return res.status(404).json({message: "no user with id"})
+      }
+      res.status(201).json(user);
+    } catch (error) {
+      console.log(error)
+      res.status(400).json({ error: 'Wrong input' });
+    }
+  });
+
+  app.delete('/api/users/:userId/friends/:friendId', async (req, res) => {
+    try {
+      const user = await User.findOneAndUpdate({_id:req.params.userId},{$pull:{friends:req.params.friendId}},{new:true});
+      if (!user){
+        return res.status(404).json({message: "no user with id"})
+      }
+      res.status(201).json(user);
+    } catch (error) {
+      console.log(error)
+      res.status(400).json({ error: 'Wrong input' });
+    }
+  });
 
 
